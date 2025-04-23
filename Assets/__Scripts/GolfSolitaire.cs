@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;   // We’ll need this line later in the chap
 
 [RequireComponent(typeof(Deck))]                                              // a
 [RequireComponent(typeof(JsonParseLayout))]
-public class Prospector : MonoBehaviour
+public class GolfSolitaire : MonoBehaviour
 {
-    private static Prospector S; // A private Singleton for Prospector
+    private static GolfSolitaire S; // A private Singleton for Prospector
 
     [Header("Dynamic")]
     public List<CardProspector> drawPile;
@@ -41,6 +41,7 @@ public class Prospector : MonoBehaviour
         drawPile = ConvertCardsToCardProspectors(deck.cards);
 
         LayoutMine();
+        SetMineFaceUps();
 
         MoveToTarget(Draw());
         UpdateDrawPile();
@@ -155,7 +156,7 @@ public class Prospector : MonoBehaviour
     /// <summary>
     /// Make cp the new target card
     /// </summary>
-    /// <param name="cp">The CardProspector to be moved</param>
+    /// <param name="cp">The CardGolf to be moved</param>
     void MoveToTarget(CardProspector cp)
     {
         // If there is currently a target card, move it to discardPile
@@ -249,7 +250,6 @@ public class Prospector : MonoBehaviour
             case eCardState.mine:
                 // Clicking a card in the mine will check if it’s a valid play
                 bool validMatch = true;  // Initially assume that it’s valid 
-                S.SetMineFaceUps();
 
                 // If the card is face-down, it’s not valid
                 if (!cp.faceUp) validMatch = false;
@@ -257,6 +257,8 @@ public class Prospector : MonoBehaviour
                 // If it’s not an adjacent rank, it’s not valid
                 if (!cp.AdjacentTo(S.target)) validMatch = false;            // b
 
+
+                if (cp.hiddenBy != null) validMatch = false;
 
                 if (validMatch)
                 {        // If it’s a valid card

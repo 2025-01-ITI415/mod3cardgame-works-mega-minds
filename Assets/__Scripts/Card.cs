@@ -52,6 +52,9 @@ public class Card : MonoBehaviour
     /// Shortcut for setting transform.localPosition.
     /// </summary>
     /// <param name="v"></param>
+    
+
+    
     public virtual void SetLocalPos(Vector3 v)
     {                              // b
         transform.localPosition = v;
